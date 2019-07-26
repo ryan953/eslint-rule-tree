@@ -1,0 +1,85 @@
+{
+  "name": "eslint-rule-tree",
+  "version": "0.0.1",
+  "description": "Consolidate your eslintrc files",
+  "license": "MIT",
+  "author": {
+    "name": "Ryan Albrecht",
+    "email": "ryan@ryanalbrecht.ca",
+    "url": "ryanalbrecht.ca"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ryan953/eslint-rule-tree.git"
+  },
+  "bugs": "https://github.com/ryan953/eslint-rule-tree/issues",
+  "keywords": [
+    "eslint",
+    "eslintrc",
+    "eslint-config",
+    "eslint-rules"
+  ],
+  "bin": {
+    "flow-annotation-check": "./bin/flow-annotation-check.js"
+  },
+  "main": "src/eslint-rule-tree.js",
+  "engines": {
+    "node": "^8 || >=10"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "dependencies": {
+    "glob": "^7.1.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-flow": "^7.0.0",
+    "core-js": "3",
+    "flow-bin": "^0.103.0",
+    "jest": "^24.8.0"
+  },
+  "scripts": {
+    "preversion": "yarn clean && yarn test && yarn transpile",
+    "postversion": "git push && git push --tags && npm publish",
+    "test": "flow check && jest",
+    "prebuild": "yarn clean && yarn test",
+    "build": "yarn transpile",
+    "clean": "rm -Rf npm-debug.log lib",
+    "flow:check": "flow check",
+    "transpile": "rm -Rf lib/* && babel src --out-dir lib --ignore __tests__",
+    "demo": "yarn transpile && ./bin/eslint-rule-tree",
+    "demo:examples": "yarn demo -- --path=src/__examples__"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "8"
+          },
+          "useBuiltIns": "usage",
+          "corejs": 3
+        }
+      ],
+      "@babel/preset-flow"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "roots": [
+      "src"
+    ],
+    "testPathIgnorePatterns": [
+      "__tests__/fixtures"
+    ]
+  }
+}
